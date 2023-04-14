@@ -4,11 +4,13 @@ from random import randint
 
 
 pg.init()
-
+#создаем экран размером 400 х 600
 screen = pg.display.set_mode((400,600))
+#загружаем наш задний фон, дорогу
 bg = pg.image.load('assets/bg.png')
 clock = pg.time.Clock()
 
+#создаем класс нашей машинки
 class Person(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -18,6 +20,7 @@ class Person(pg.sprite.Sprite):
         self.rect.x = 200
         self.rect.y = 500
     
+#создаем физику движения для нашей машинки
     def update(self, x = 0):
         if (self.rect.x <= 0):
             x = 0
@@ -27,7 +30,7 @@ class Person(pg.sprite.Sprite):
             self.rect.x = 350
         self.rect.move_ip(x, 0)
 
-
+#создаем класс машинки соперника
 class Enemy(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -37,6 +40,7 @@ class Enemy(pg.sprite.Sprite):
         self.rect.x = randint(0,360)
         self.rect.y = -100
     
+#создаем физику движения для машинки соперника
     def update(self):
         if self.rect.y > 700:
             self.rect.y = -100
@@ -50,6 +54,8 @@ class Enemy(pg.sprite.Sprite):
         if cnt >= 20:
             self.rect.move_ip(0,15)
 
+#создаем класс монетки
+
 class Coin(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -59,6 +65,7 @@ class Coin(pg.sprite.Sprite):
         self.rect.x = randint(0,360)
         self.rect.y = -100
 
+#физика движения монетки
     def update(self):
         if self.rect.y > 700:
             self.new_c()
@@ -80,7 +87,7 @@ sprites.add(coin)
 
 
 
-
+#шрифт
 font = pg.font.Font(None, 40)
 cnt = 0
 
@@ -113,12 +120,18 @@ while 1:
         else:
             player.update(15)    
 
+
+    # если противник ударяется об нашу машинку, конец игры
     if enemy.rect.collideobjects([player]):
         pg.quit()    
         sys.exit()
 
+    # если монетка ударяется об машинку противника, 
+    # она получает новые координаты
     if coin.rect.collideobjects([enemy]):
         coin.new_c()
+    # если монетка ударяется об нашу монетку,
+    #  то мы считаем кол-во собранных монеток
     if coin.rect.collideobjects([player]):
         cnt += 1
         coin.new_c()

@@ -27,6 +27,6 @@ while 1:
     if y < -49:
         y = 1049
     screen.fill('white')
-    pg.draw.circle(surface = screen, color = (255,255,0), center = (x,y), radius = 25)
+    pg.draw.circle(surface = screen, color = (255,0,0), center = (x,y), radius = 25)
     pg.display.flip()
     clock.tick(60)
